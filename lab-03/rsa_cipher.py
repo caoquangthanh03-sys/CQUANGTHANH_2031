@@ -22,6 +22,7 @@ class MyApp(QMainWindow):
             response = requests.get(url)
             if response.status_code == 200:
                 data = response.json()
+
                 msg = QMessageBox()
                 msg.setIcon(QMessageBox.Information)
                 msg.setText(data["message"])
@@ -29,7 +30,7 @@ class MyApp(QMainWindow):
             else:
                 print("Error while calling API")
         except requests.exceptions.RequestException as e:
-            print("Error: %s" % e.message)
+            print("Error: %s" % e)
 
     def call_api_encrypt(self):
         url = "http://127.0.0.1:5000/api/rsa/encrypt"
@@ -37,11 +38,13 @@ class MyApp(QMainWindow):
             "message": self.ui.txt_plain_text.toPlainText(),
             "key_type": "public"
         }
+
         try:
             response = requests.post(url, json=payload)
             if response.status_code == 200:
                 data = response.json()
-                self.ui.txt_cipher_text.setPlainText(data["encrypted_message"])
+
+                self.ui.txt_cipher_text.setText(data["encrypted_message"])
 
                 msg = QMessageBox()
                 msg.setIcon(QMessageBox.Information)
@@ -50,7 +53,7 @@ class MyApp(QMainWindow):
             else:
                 print("Error while calling API")
         except requests.exceptions.RequestException as e:
-            print("Error: %s" % e.message)
+            print("Error: %s" % e)
 
     def call_api_decrypt(self):
         url = "http://127.0.0.1:5000/api/rsa/decrypt"
@@ -58,11 +61,13 @@ class MyApp(QMainWindow):
             "ciphertext": self.ui.txt_cipher_text.toPlainText(),
             "key_type": "private"
         }
+
         try:
             response = requests.post(url, json=payload)
             if response.status_code == 200:
                 data = response.json()
-                self.ui.txt_plain_text.setPlainText(data["decrypted_message"])
+
+                self.ui.txt_plain_text.setText(data["decrypted_message"])
 
                 msg = QMessageBox()
                 msg.setIcon(QMessageBox.Information)
@@ -71,18 +76,20 @@ class MyApp(QMainWindow):
             else:
                 print("Error while calling API")
         except requests.exceptions.RequestException as e:
-            print("Error: %s" % e.message)
+            print("Error: %s" % e)
 
     def call_api_sign(self):
         url = "http://127.0.0.1:5000/api/rsa/sign"
         payload = {
             "message": self.ui.txt_info.toPlainText(),
         }
+
         try:
             response = requests.post(url, json=payload)
             if response.status_code == 200:
                 data = response.json()
-                self.ui.txt_sign.setPlainText(data["signature"])
+
+                self.ui.txt_sign.setText(data["signature"])
 
                 msg = QMessageBox()
                 msg.setIcon(QMessageBox.Information)
@@ -91,7 +98,7 @@ class MyApp(QMainWindow):
             else:
                 print("Error while calling API")
         except requests.exceptions.RequestException as e:
-            print("Error: %s" % e.message)
+            print("Error: %s" % e)
 
     def call_api_verify(self):
         url = "http://127.0.0.1:5000/api/rsa/verify"
@@ -99,11 +106,13 @@ class MyApp(QMainWindow):
             "message": self.ui.txt_info.toPlainText(),
             "signature": self.ui.txt_sign.toPlainText()
         }
+
         try:
             response = requests.post(url, json=payload)
             if response.status_code == 200:
                 data = response.json()
-                if (data["is_verified"]):
+
+                if data["is_verified"]:
                     msg = QMessageBox()
                     msg.setIcon(QMessageBox.Information)
                     msg.setText("Verified Successfully")
@@ -116,7 +125,7 @@ class MyApp(QMainWindow):
             else:
                 print("Error while calling API")
         except requests.exceptions.RequestException as e:
-            print("Error: %s" % e.message)
+            print("Error: %s" % e)
 
 
 if __name__ == "__main__":

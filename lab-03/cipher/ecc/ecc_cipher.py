@@ -3,7 +3,6 @@ import ecdsa, os
 if not os.path.exists('cipher/ecc/keys'):
     os.makedirs('cipher/ecc/keys')
 
-
 class ECCCipher:
     def __init__(self):
         pass
